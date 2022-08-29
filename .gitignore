@@ -1,0 +1,8 @@
+# File extensions
+*.pt
+*.pth
+*.ckpt
+*.jpeg
+
+# Directories
+**/__pycache__/
