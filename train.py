@@ -108,30 +108,37 @@ else:
 # train model
 model.train()
 losses = []
-for it, (images, _) in enumerate(data_loader):
-    with torch.no_grad():
-        images = preprocess_vqgan(images.cuda(args.gpu))
-        _, _, [_, _, indices] = vq_model.encode(images)
-        indices = indices.reshape(args.batch_size, -1)
-        
-    # forward prop
-    _, loss, _ = model(indices[:, :-1], indices[:, 1:])  # first output returns logits, last one returns unreduced losses
-    losses.append(loss.item())
+global_iter = 0
 
-    # backprop and update the parameters
-    model.zero_grad()
-    loss.backward()
-    optimizer.step()
+# train without epochs
+while True:
 
-    if it % args.print_freq == 0:
-        train_loss = float(np.mean(losses))
-        print('Iteration:', it, '|', 'Training loss:', train_loss)
+    for _, (images, _) in enumerate(data_loader):
+        with torch.no_grad():
+            images = preprocess_vqgan(images.cuda(args.gpu))
+            _, _, [_, _, indices] = vq_model.encode(images)
+            indices = indices.reshape(args.batch_size, -1)
+            
+        # forward prop
+        _, loss, _ = model(indices[:, :-1], indices[:, 1:])  # first output returns logits, last one returns unreduced losses
+        losses.append(loss.item())
 
-        # save trained model, clusters, and final train loss
-        if args.distributed:
-            if args.rank == 0:
-                save_checkpoint(model, optimizer, train_loss, it, model_name, args.save_dir)
-        else:
-            save_checkpoint(model, optimizer, train_loss, it, model_name, args.save_dir)
+        # backprop and update the parameters
+        model.zero_grad()
+        loss.backward()
+        optimizer.step()
 
-        losses = []
+        if global_iter % args.print_freq == 0:
+            train_loss = float(np.mean(losses))
+            print('Iteration:', global_iter, '|', 'Training loss:', train_loss)
+
+            # save trained model, clusters, and final train loss
+            if args.distributed:
+                if args.rank == 0:
+                    save_checkpoint(model, optimizer, train_loss, global_iter, model_name, args.save_dir)
+            else:
+                save_checkpoint(model, optimizer, train_loss, global_iter, model_name, args.save_dir)
+
+            losses = []
+
+        global_iter += 1
