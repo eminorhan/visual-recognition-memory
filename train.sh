@@ -23,10 +23,10 @@ OPTIMIZER='Adam'
 
 srun python -u /scratch/eo41/visual-recognition-memory/train.py \
 	--save_dir '/scratch/eo41/visual-recognition-memory/gpt_pretrained_models' \
-	--batch_size 32 \
+	--batch_size 26 \
 	--n_layer 48 \
 	--n_head 16 \
-	--n_emb 2048 \
+	--n_emb 1600 \
 	--num_workers 4 \
 	--optimizer $OPTIMIZER \
 	--lr $LR \
