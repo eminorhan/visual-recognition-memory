@@ -7,6 +7,7 @@ import numpy as np
 from torchvision.transforms import Compose, Resize, RandomCrop, ToTensor
 from torchvision.datasets import ImageFolder
 from torch.utils.data import DataLoader
+from torch.utils.data.distributed import DistributedSampler
 from utils import set_seed, load_config, load_vqgan, preprocess_vqgan, save_checkpoint
 from gptmodel import GPT, GPTConfig
 
@@ -25,7 +26,7 @@ parser.add_argument('--block_size', default=255, type=int, help='context size')
 parser.add_argument('--batch_size', default=32, type=int, help='batch size per gpu')
 parser.add_argument('--print_freq', default=5000, type=int, help='print after x iterations')
 parser.add_argument('--lr', default=0.0005, type=float, help='learning rate')
-parser.add_argument('--optimizer', default='Adam', choices=['Adam', 'SGD', 'ASGD'], help='optimizer')
+parser.add_argument('--optimizer', default='Adam', choices=['Adam', 'AdamW', 'SGD', 'ASGD'], help='optimizer')
 parser.add_argument('--resume', default='', type=str, help='Model path for resuming training')
 parser.add_argument('--gpu', default=None, type=int)
 parser.add_argument('--world-size', default=-1, type=int, help='number of nodes for distributed training')
@@ -71,7 +72,8 @@ print('Loaded VQ encoder.')
 # data pipeline
 transform = Compose([Resize(288), RandomCrop(256), ToTensor()])
 dataset = ImageFolder(args.data_path, transform)
-data_loader = DataLoader(dataset, batch_size=args.batch_size, shuffle=True, num_workers=args.num_workers, pin_memory=True, sampler=None)
+sampler = DistributedSampler(dataset, seed=args.seed) if args.distributed else None
+data_loader = DataLoader(dataset, batch_size=args.batch_size, shuffle=(not args.distributed), num_workers=args.num_workers, pin_memory=True, sampler=sampler)
 print('Data loaded: dataset contains {} images, and takes {} training iterations per epoch.'.format(len(dataset), len(data_loader) // args.world_size))
 
 # model save name
