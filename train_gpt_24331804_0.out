@@ -57,3 +57,26 @@ Iteration: 200 | Training loss: 6.7202839756011965
 Saving model to: /scratch/eo41/visual-recognition-memory/gpt_pretrained_models/model_200_48l_16h_1600e_78b_0.0001lr_Adamo_0s.pt
 Iteration: 300 | Training loss: 6.654232439994812
 Saving model to: /scratch/eo41/visual-recognition-memory/gpt_pretrained_models/model_300_48l_16h_1600e_78b_0.0001lr_Adamo_0s.pt
+Iteration: 400 | Training loss: 6.618890609741211
+Saving model to: /scratch/eo41/visual-recognition-memory/gpt_pretrained_models/model_400_48l_16h_1600e_78b_0.0001lr_Adamo_0s.pt
+Iteration: 500 | Training loss: 6.559412159919739
+Saving model to: /scratch/eo41/visual-recognition-memory/gpt_pretrained_models/model_500_48l_16h_1600e_78b_0.0001lr_Adamo_0s.pt
+Iteration: 600 | Training loss: 6.532349796295166
+Saving model to: /scratch/eo41/visual-recognition-memory/gpt_pretrained_models/model_600_48l_16h_1600e_78b_0.0001lr_Adamo_0s.pt
+Iteration: 700 | Training loss: 6.5006926727294925
+Saving model to: /scratch/eo41/visual-recognition-memory/gpt_pretrained_models/model_700_48l_16h_1600e_78b_0.0001lr_Adamo_0s.pt
+Iteration: 800 | Training loss: 6.47892285823822
+Saving model to: /scratch/eo41/visual-recognition-memory/gpt_pretrained_models/model_800_48l_16h_1600e_78b_0.0001lr_Adamo_0s.pt
+Iteration: 900 | Training loss: 6.461566390991211
+Saving model to: /scratch/eo41/visual-recognition-memory/gpt_pretrained_models/model_900_48l_16h_1600e_78b_0.0001lr_Adamo_0s.pt
+Iteration: 1000 | Training loss: 6.443953442573547
+Saving model to: /scratch/eo41/visual-recognition-memory/gpt_pretrained_models/model_1000_48l_16h_1600e_78b_0.0001lr_Adamo_0s.pt
+Iteration: 1100 | Training loss: 6.429705629348755
+Saving model to: /scratch/eo41/visual-recognition-memory/gpt_pretrained_models/model_1100_48l_16h_1600e_78b_0.0001lr_Adamo_0s.pt
+Iteration: 1200 | Training loss: 6.413273205757141
+Saving model to: /scratch/eo41/visual-recognition-memory/gpt_pretrained_models/model_1200_48l_16h_1600e_78b_0.0001lr_Adamo_0s.pt
+Iteration: 1300 | Training loss: 6.39187566280365
+Saving model to: /scratch/eo41/visual-recognition-memory/gpt_pretrained_models/model_1300_48l_16h_1600e_78b_0.0001lr_Adamo_0s.pt
+srun: Job step aborted: Waiting up to 32 seconds for job step to finish.
+slurmstepd: error: *** STEP 24331804.0 ON ga001 CANCELLED AT 2022-09-01T02:42:30 DUE TO TIME LIMIT ***
+slurmstepd: error: *** JOB 24331804 ON ga001 CANCELLED AT 2022-09-01T02:42:30 DUE TO TIME LIMIT ***

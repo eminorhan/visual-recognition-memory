@@ -74,7 +74,7 @@ transform = Compose([Resize(288), RandomCrop(256), ToTensor()])
 dataset = ImageFolder(args.data_path, transform)
 sampler = DistributedSampler(dataset, seed=args.seed) if args.distributed else None
 data_loader = DataLoader(dataset, batch_size=args.batch_size, shuffle=(not args.distributed), num_workers=args.num_workers, pin_memory=True, sampler=sampler)
-print('Data loaded: dataset contains {} images, and takes {} training iterations per epoch.'.format(len(dataset), len(data_loader) // args.world_size))
+print('Data loaded: dataset contains {} images, and takes {} training iterations per epoch.'.format(len(dataset), len(data_loader)))
 
 # model save name
 model_name = '{}l_{}h_{}e_{}b_{}lr_{}o_{}s.pt'.format(args.n_layer, args.n_head, args.n_embd, args.world_size * args.batch_size, args.lr, args.optimizer, args.seed)
@@ -111,9 +111,13 @@ else:
 model.train()
 losses = []
 global_iter = 0
+epoch_iter = 0
 
-# train without epochs
 while True:
+
+    # the following is necessary to shuffle the order at the beginning of each epoch
+    if args.distributed: 
+        data_loader.sampler.set_epoch(epoch_iter)
 
     for _, (images, _) in enumerate(data_loader):
         with torch.no_grad():
