@@ -6,7 +6,7 @@
 #SBATCH --cpus-per-task=8
 #SBATCH --mem=492GB
 #SBATCH --time=48:00:00
-#SBATCH --array=0
+#SBATCH --array=2
 #SBATCH --job-name=train_gpt
 #SBATCH --output=train_gpt_%A_%a.out
 
@@ -18,20 +18,20 @@ export WORLD_SIZE=4
 module purge
 module load cuda/11.3.1
 
-LR=0.0001
+LR=0.0003
 OPTIMIZER='Adam'
 
 srun python -u /scratch/eo41/visual-recognition-memory/train.py \
 	--save_dir '/scratch/eo41/visual-recognition-memory/gpt_pretrained_models' \
-	--batch_size 24 \
-	--n_layer 48 \
-	--n_head 25 \
-	--n_emb 1600 \
-	--num_workers 4 \
+	--batch_size 48 \
+	--n_layer 36 \
+	--n_head 20 \
+	--n_emb 1280 \
+	--num_workers 8 \
 	--print_freq 5000 \
 	--optimizer $OPTIMIZER \
 	--lr $LR \
 	--seed $SLURM_ARRAY_TASK_ID \
-	--resume ''
+	--resume '/scratch/eo41/visual-recognition-memory/gpt_pretrained_models/model_155000_36l_20h_1280e_192b_0.0003lr_Adamo_1s.pt'
 
 echo "Done"
