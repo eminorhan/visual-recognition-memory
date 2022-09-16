@@ -4,12 +4,12 @@ import argparse
 import torch
 import torch.distributed as dist
 import numpy as np
+import gptmodel
 from torchvision.transforms import Compose, Resize, RandomCrop, ToTensor
 from torchvision.datasets import ImageFolder
 from torch.utils.data import DataLoader
 from torch.utils.data.distributed import DistributedSampler
 from utils import set_seed, load_config, load_vqgan, preprocess_vqgan, save_checkpoint
-from gptmodel import GPT, GPTConfig
 
 parser = argparse.ArgumentParser(description='Train a GPT on VQGAN encoded images')
 parser.add_argument('--data_path', default='/scratch/work/public/imagenet/train', type=str, help='data path')
@@ -18,9 +18,7 @@ parser.add_argument('--vqmodel_path', default="/scratch/eo41/visual-recognition-
 parser.add_argument('--num_workers', default=4, type=int, help='number of data loading workers (default: 4)')
 parser.add_argument('--seed', default=1, type=int, help='random seed')
 parser.add_argument('--save_dir', default='', type=str, help='model save directory')
-parser.add_argument('--n_layer', default=48, type=int, help='number of layers')
-parser.add_argument('--n_head', default=16, type=int, help='number of attention heads')
-parser.add_argument('--n_embd', default=1024, type=int, help='embedding dimensionality')
+parser.add_argument('--gpt_config', default='GPT_bet', type=str, help='name of GPT config', choices=['GPT_alef', 'GPT_bet', 'GPT_gimel', 'GPT_dalet'])
 parser.add_argument('--vocab_size', default=16384, type=int, help='vocabulary size')
 parser.add_argument('--block_size', default=255, type=int, help='context size')
 parser.add_argument('--batch_size', default=32, type=int, help='batch size per gpu')
@@ -28,6 +26,7 @@ parser.add_argument('--print_freq', default=5000, type=int, help='print after x 
 parser.add_argument('--lr', default=0.0005, type=float, help='learning rate')
 parser.add_argument('--optimizer', default='Adam', choices=['Adam', 'AdamW', 'SGD', 'ASGD'], help='optimizer')
 parser.add_argument('--resume', default='', type=str, help='Model path for resuming training')
+parser.add_argument('--save_prefix', default='', type=str, help='Prefix string for saving')
 parser.add_argument('--gpu', default=None, type=int)
 parser.add_argument('--world-size', default=-1, type=int, help='number of nodes for distributed training')
 parser.add_argument('--rank', default=-1, type=int, help='node rank for distributed training')
@@ -61,8 +60,6 @@ if args.distributed:
             pass
         builtins.print = print_pass
 
-print('Running on {} GPUs total'.format(args.world_size))
-
 # load vqgan model to encode images
 vq_config = load_config(args.vqconfig_path, display=True)
 vq_model = load_vqgan(vq_config, ckpt_path=args.vqmodel_path)
@@ -76,12 +73,12 @@ sampler = DistributedSampler(dataset, seed=args.seed) if args.distributed else N
 data_loader = DataLoader(dataset, batch_size=args.batch_size, shuffle=(not args.distributed), num_workers=args.num_workers, pin_memory=True, sampler=sampler)
 print('Data loaded: dataset contains {} images, and takes {} training iterations per epoch.'.format(len(dataset), len(data_loader)))
 
-# model save name
-model_name = '{}l_{}h_{}e_{}b_{}lr_{}o_{}s.pt'.format(args.n_layer, args.n_head, args.n_embd, args.world_size * args.batch_size, args.lr, args.optimizer, args.seed)
-
 # set up model
-mconf = GPTConfig(args.vocab_size, args.block_size, embd_pdrop=0.0, resid_pdrop=0.0, attn_pdrop=0.0, n_layer=args.n_layer, n_head=args.n_head, n_embd=args.n_embd)
-model = GPT(mconf)
+mconf = gptmodel.__dict__[args.gpt_config](args.vocab_size, args.block_size)
+model = gptmodel.GPT(mconf)
+
+print('Running on {} GPUs total'.format(args.world_size))
+model_name = '{}_{}_{}b_{}lr_{}o_{}s.pt'.format(args.save_prefix, args.gpt_config, args.world_size * args.batch_size, args.lr, args.optimizer, args.seed)
 
 if args.distributed:
     # For multiprocessing distributed, DDP constructor should always set the single device scope
@@ -148,3 +145,5 @@ while True:
             losses = []
 
         global_iter += 1
+
+    epoch_iter += 1

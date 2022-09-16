@@ -1,0 +1,118 @@
+Namespace(data_path='/scratch/eo41/Y', vqconfig_path='/scratch/eo41/visual-recognition-memory/vqgan_pretrained_models/imagenet_16x16_16384.yaml', vqmodel_path='/scratch/eo41/visual-recognition-memory/vqgan_pretrained_models/imagenet_16x16_16384.ckpt', num_workers=8, seed=0, save_dir='/scratch/eo41/visual-recognition-memory/gpt_pretrained_models', gpt_config='GPT_gimel', vocab_size=16384, block_size=255, batch_size=32, print_freq=5000, lr=0.0003, optimizer='Adam', resume='', save_prefix='saycam', gpu=None, world_size=-1, rank=-1, dist_url='env://', dist_backend='nccl', local_rank=-1)
+Namespace(data_path='/scratch/eo41/Y', vqconfig_path='/scratch/eo41/visual-recognition-memory/vqgan_pretrained_models/imagenet_16x16_16384.yaml', vqmodel_path='/scratch/eo41/visual-recognition-memory/vqgan_pretrained_models/imagenet_16x16_16384.ckpt', num_workers=8, seed=0, save_dir='/scratch/eo41/visual-recognition-memory/gpt_pretrained_models', gpt_config='GPT_gimel', vocab_size=16384, block_size=255, batch_size=32, print_freq=5000, lr=0.0003, optimizer='Adam', resume='', save_prefix='saycam', gpu=None, world_size=-1, rank=-1, dist_url='env://', dist_backend='nccl', local_rank=-1)
+Namespace(data_path='/scratch/eo41/Y', vqconfig_path='/scratch/eo41/visual-recognition-memory/vqgan_pretrained_models/imagenet_16x16_16384.yaml', vqmodel_path='/scratch/eo41/visual-recognition-memory/vqgan_pretrained_models/imagenet_16x16_16384.ckpt', num_workers=8, seed=0, save_dir='/scratch/eo41/visual-recognition-memory/gpt_pretrained_models', gpt_config='GPT_gimel', vocab_size=16384, block_size=255, batch_size=32, print_freq=5000, lr=0.0003, optimizer='Adam', resume='', save_prefix='saycam', gpu=None, world_size=-1, rank=-1, dist_url='env://', dist_backend='nccl', local_rank=-1)
+Namespace(data_path='/scratch/eo41/Y', vqconfig_path='/scratch/eo41/visual-recognition-memory/vqgan_pretrained_models/imagenet_16x16_16384.yaml', vqmodel_path='/scratch/eo41/visual-recognition-memory/vqgan_pretrained_models/imagenet_16x16_16384.ckpt', num_workers=8, seed=0, save_dir='/scratch/eo41/visual-recognition-memory/gpt_pretrained_models', gpt_config='GPT_gimel', vocab_size=16384, block_size=255, batch_size=32, print_freq=5000, lr=0.0003, optimizer='Adam', resume='', save_prefix='saycam', gpu=None, world_size=-1, rank=-1, dist_url='env://', dist_backend='nccl', local_rank=-1)
+Namespace(data_path='/scratch/eo41/Y', vqconfig_path='/scratch/eo41/visual-recognition-memory/vqgan_pretrained_models/imagenet_16x16_16384.yaml', vqmodel_path='/scratch/eo41/visual-recognition-memory/vqgan_pretrained_models/imagenet_16x16_16384.ckpt', num_workers=8, seed=0, save_dir='/scratch/eo41/visual-recognition-memory/gpt_pretrained_models', gpt_config='GPT_gimel', vocab_size=16384, block_size=255, batch_size=32, print_freq=5000, lr=0.0003, optimizer='Adam', resume='', save_prefix='saycam', gpu=None, world_size=-1, rank=-1, dist_url='env://', dist_backend='nccl', local_rank=-1)
+Namespace(data_path='/scratch/eo41/Y', vqconfig_path='/scratch/eo41/visual-recognition-memory/vqgan_pretrained_models/imagenet_16x16_16384.yaml', vqmodel_path='/scratch/eo41/visual-recognition-memory/vqgan_pretrained_models/imagenet_16x16_16384.ckpt', num_workers=8, seed=0, save_dir='/scratch/eo41/visual-recognition-memory/gpt_pretrained_models', gpt_config='GPT_gimel', vocab_size=16384, block_size=255, batch_size=32, print_freq=5000, lr=0.0003, optimizer='Adam', resume='', save_prefix='saycam', gpu=None, world_size=-1, rank=-1, dist_url='env://', dist_backend='nccl', local_rank=-1)
+Namespace(data_path='/scratch/eo41/Y', vqconfig_path='/scratch/eo41/visual-recognition-memory/vqgan_pretrained_models/imagenet_16x16_16384.yaml', vqmodel_path='/scratch/eo41/visual-recognition-memory/vqgan_pretrained_models/imagenet_16x16_16384.ckpt', num_workers=8, seed=0, save_dir='/scratch/eo41/visual-recognition-memory/gpt_pretrained_models', gpt_config='GPT_gimel', vocab_size=16384, block_size=255, batch_size=32, print_freq=5000, lr=0.0003, optimizer='Adam', resume='', save_prefix='saycam', gpu=None, world_size=-1, rank=-1, dist_url='env://', dist_backend='nccl', local_rank=-1)
+Namespace(data_path='/scratch/eo41/Y', vqconfig_path='/scratch/eo41/visual-recognition-memory/vqgan_pretrained_models/imagenet_16x16_16384.yaml', vqmodel_path='/scratch/eo41/visual-recognition-memory/vqgan_pretrained_models/imagenet_16x16_16384.ckpt', num_workers=8, seed=0, save_dir='/scratch/eo41/visual-recognition-memory/gpt_pretrained_models', gpt_config='GPT_gimel', vocab_size=16384, block_size=255, batch_size=32, print_freq=5000, lr=0.0003, optimizer='Adam', resume='', save_prefix='saycam', gpu=None, world_size=-1, rank=-1, dist_url='env://', dist_backend='nccl', local_rank=-1)
+model:
+  base_learning_rate: 4.5e-06
+  params:
+    ddconfig:
+      attn_resolutions:
+      - 16
+      ch: 128
+      ch_mult:
+      - 1
+      - 1
+      - 2
+      - 2
+      - 4
+      double_z: false
+      dropout: 0.0
+      in_channels: 3
+      num_res_blocks: 2
+      out_ch: 3
+      resolution: 256
+      z_channels: 256
+    embed_dim: 256
+    lossconfig:
+      params:
+        codebook_weight: 1.0
+        disc_conditional: false
+        disc_in_channels: 3
+        disc_num_layers: 2
+        disc_start: 0
+        disc_weight: 0.75
+      target: vqloss.VQLPIPSWithDiscriminator
+    monitor: val/rec_loss
+    n_embed: 16384
+  target: vqmodel.VQModel
+
+Working with z of shape (1, 256, 16, 16) = 65536 dimensions.
+loaded pretrained LPIPS loss from taming/modules/autoencoder/lpips/vgg.pth
+VQLPIPSWithDiscriminator running with hinge loss.
+Loaded VQ encoder.
+Data loaded: dataset contains 494572 images, and takes 1932 training iterations per epoch.
+Number of parameters: 750659840
+Running on 8 GPUs total
+=> no checkpoint loaded, will train from scratch
+/scratch/eo41/miniconda3/lib/python3.9/site-packages/torch/nn/_reduction.py:42: UserWarning: size_average and reduce args will be deprecated, please use reduction='none' instead.
+  warnings.warn(warning.format(ret))
+/scratch/eo41/miniconda3/lib/python3.9/site-packages/torch/nn/_reduction.py:42: UserWarning: size_average and reduce args will be deprecated, please use reduction='none' instead.
+  warnings.warn(warning.format(ret))
+/scratch/eo41/miniconda3/lib/python3.9/site-packages/torch/nn/_reduction.py:42: UserWarning: size_average and reduce args will be deprecated, please use reduction='none' instead.
+  warnings.warn(warning.format(ret))
+/scratch/eo41/miniconda3/lib/python3.9/site-packages/torch/nn/_reduction.py:42: UserWarning: size_average and reduce args will be deprecated, please use reduction='none' instead.
+  warnings.warn(warning.format(ret))
+/scratch/eo41/miniconda3/lib/python3.9/site-packages/torch/nn/_reduction.py:42: UserWarning: size_average and reduce args will be deprecated, please use reduction='none' instead.
+  warnings.warn(warning.format(ret))
+/scratch/eo41/miniconda3/lib/python3.9/site-packages/torch/nn/_reduction.py:42: UserWarning: size_average and reduce args will be deprecated, please use reduction='none' instead.
+  warnings.warn(warning.format(ret))
+/scratch/eo41/miniconda3/lib/python3.9/site-packages/torch/nn/_reduction.py:42: UserWarning: size_average and reduce args will be deprecated, please use reduction='none' instead.
+  warnings.warn(warning.format(ret))
+/scratch/eo41/miniconda3/lib/python3.9/site-packages/torch/nn/_reduction.py:42: UserWarning: size_average and reduce args will be deprecated, please use reduction='none' instead.
+  warnings.warn(warning.format(ret))
+Iteration: 0 | Training loss: 9.960071563720703
+Saving model to: /scratch/eo41/visual-recognition-memory/gpt_pretrained_models/model_0_saycam_GPT_gimel_256b_0.0003lr_Adamo_0s.pt
+Iteration: 5000 | Training loss: 5.83340365858078
+Saving model to: /scratch/eo41/visual-recognition-memory/gpt_pretrained_models/model_5000_saycam_GPT_gimel_256b_0.0003lr_Adamo_0s.pt
+Iteration: 10000 | Training loss: 5.104150646209717
+Saving model to: /scratch/eo41/visual-recognition-memory/gpt_pretrained_models/model_10000_saycam_GPT_gimel_256b_0.0003lr_Adamo_0s.pt
+Iteration: 15000 | Training loss: 4.869343239212036
+Saving model to: /scratch/eo41/visual-recognition-memory/gpt_pretrained_models/model_15000_saycam_GPT_gimel_256b_0.0003lr_Adamo_0s.pt
+Iteration: 20000 | Training loss: 4.7281740833282475
+Saving model to: /scratch/eo41/visual-recognition-memory/gpt_pretrained_models/model_20000_saycam_GPT_gimel_256b_0.0003lr_Adamo_0s.pt
+Iteration: 25000 | Training loss: 4.6281748766899105
+Saving model to: /scratch/eo41/visual-recognition-memory/gpt_pretrained_models/model_25000_saycam_GPT_gimel_256b_0.0003lr_Adamo_0s.pt
+Iteration: 30000 | Training loss: 4.548286907196045
+Saving model to: /scratch/eo41/visual-recognition-memory/gpt_pretrained_models/model_30000_saycam_GPT_gimel_256b_0.0003lr_Adamo_0s.pt
+Iteration: 35000 | Training loss: 4.484753617811203
+Saving model to: /scratch/eo41/visual-recognition-memory/gpt_pretrained_models/model_35000_saycam_GPT_gimel_256b_0.0003lr_Adamo_0s.pt
+Iteration: 40000 | Training loss: 4.429371075773239
+Saving model to: /scratch/eo41/visual-recognition-memory/gpt_pretrained_models/model_40000_saycam_GPT_gimel_256b_0.0003lr_Adamo_0s.pt
+Iteration: 45000 | Training loss: 4.381770704984665
+Saving model to: /scratch/eo41/visual-recognition-memory/gpt_pretrained_models/model_45000_saycam_GPT_gimel_256b_0.0003lr_Adamo_0s.pt
+Iteration: 50000 | Training loss: 4.339446531295776
+Saving model to: /scratch/eo41/visual-recognition-memory/gpt_pretrained_models/model_50000_saycam_GPT_gimel_256b_0.0003lr_Adamo_0s.pt
+Iteration: 55000 | Training loss: 4.301254053497314
+Saving model to: /scratch/eo41/visual-recognition-memory/gpt_pretrained_models/model_55000_saycam_GPT_gimel_256b_0.0003lr_Adamo_0s.pt
+Iteration: 60000 | Training loss: 4.2681675159931185
+Saving model to: /scratch/eo41/visual-recognition-memory/gpt_pretrained_models/model_60000_saycam_GPT_gimel_256b_0.0003lr_Adamo_0s.pt
+Iteration: 65000 | Training loss: 4.23616066403389
+Saving model to: /scratch/eo41/visual-recognition-memory/gpt_pretrained_models/model_65000_saycam_GPT_gimel_256b_0.0003lr_Adamo_0s.pt
+Iteration: 70000 | Training loss: 4.207656762695312
+Saving model to: /scratch/eo41/visual-recognition-memory/gpt_pretrained_models/model_70000_saycam_GPT_gimel_256b_0.0003lr_Adamo_0s.pt
+Iteration: 75000 | Training loss: 4.182119665336609
+Saving model to: /scratch/eo41/visual-recognition-memory/gpt_pretrained_models/model_75000_saycam_GPT_gimel_256b_0.0003lr_Adamo_0s.pt
+Iteration: 80000 | Training loss: 4.155849430131912
+Saving model to: /scratch/eo41/visual-recognition-memory/gpt_pretrained_models/model_80000_saycam_GPT_gimel_256b_0.0003lr_Adamo_0s.pt
+Iteration: 85000 | Training loss: 4.13450337433815
+Saving model to: /scratch/eo41/visual-recognition-memory/gpt_pretrained_models/model_85000_saycam_GPT_gimel_256b_0.0003lr_Adamo_0s.pt
+Iteration: 90000 | Training loss: 4.112267937803268
+Saving model to: /scratch/eo41/visual-recognition-memory/gpt_pretrained_models/model_90000_saycam_GPT_gimel_256b_0.0003lr_Adamo_0s.pt
+Iteration: 95000 | Training loss: 4.092429824733734
+Saving model to: /scratch/eo41/visual-recognition-memory/gpt_pretrained_models/model_95000_saycam_GPT_gimel_256b_0.0003lr_Adamo_0s.pt
+Iteration: 100000 | Training loss: 4.0732242881774905
+Saving model to: /scratch/eo41/visual-recognition-memory/gpt_pretrained_models/model_100000_saycam_GPT_gimel_256b_0.0003lr_Adamo_0s.pt
+Iteration: 105000 | Training loss: 4.053983454942704
+Saving model to: /scratch/eo41/visual-recognition-memory/gpt_pretrained_models/model_105000_saycam_GPT_gimel_256b_0.0003lr_Adamo_0s.pt
+Iteration: 110000 | Training loss: 4.038479064273834
+Saving model to: /scratch/eo41/visual-recognition-memory/gpt_pretrained_models/model_110000_saycam_GPT_gimel_256b_0.0003lr_Adamo_0s.pt
+Iteration: 115000 | Training loss: 4.02061908736229
+Saving model to: /scratch/eo41/visual-recognition-memory/gpt_pretrained_models/model_115000_saycam_GPT_gimel_256b_0.0003lr_Adamo_0s.pt
+Iteration: 120000 | Training loss: 4.006272976016998
+Saving model to: /scratch/eo41/visual-recognition-memory/gpt_pretrained_models/model_120000_saycam_GPT_gimel_256b_0.0003lr_Adamo_0s.pt
+Iteration: 125000 | Training loss: 3.9899257640361787
+Saving model to: /scratch/eo41/visual-recognition-memory/gpt_pretrained_models/model_125000_saycam_GPT_gimel_256b_0.0003lr_Adamo_0s.pt
