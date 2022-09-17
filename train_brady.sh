@@ -5,7 +5,7 @@
 #SBATCH --gres=gpu:a100:4
 #SBATCH --cpus-per-task=8
 #SBATCH --mem=492GB
-#SBATCH --time=48:00:00
+#SBATCH --time=4:00:00
 #SBATCH --array=0
 #SBATCH --job-name=train_gpt
 #SBATCH --output=train_gpt_%A_%a.out
@@ -18,19 +18,20 @@ export WORLD_SIZE=8
 module purge
 module load cuda/11.3.1
 
-LR=0.0003
+LR=0.001
 OPTIMIZER='Adam'
 
 srun python -u /scratch/eo41/visual-recognition-memory/train.py \
-	--data_path '/scratch/work/public/imagenet/train' \
+	--data_path '/scratch/eo41/brady_1/study' \
 	--save_dir '/scratch/eo41/visual-recognition-memory/gpt_pretrained_models' \
 	--gpt_config 'GPT_gimel' \
-	--save_prefix 'imagenet' \
-	--batch_size 45 \
+	--save_prefix 'brady_1_scratch' \
+	--epochs 50 \
+	--batch_size 48 \
 	--num_workers 8 \
 	--optimizer $OPTIMIZER \
 	--lr $LR \
 	--seed $SLURM_ARRAY_TASK_ID \
-	--resume 'imagenet_527_gimel'
+	--resume ''
 
 echo "Done"

@@ -1,4 +1,5 @@
 import os
+import time
 import builtins
 import argparse
 import torch
@@ -114,6 +115,8 @@ for epoch in range(args.epochs):
     if args.distributed: 
         data_loader.sampler.set_epoch(epoch)
 
+    start_time = time.time()
+
     for _, (images, _) in enumerate(data_loader):
         with torch.no_grad():
             images = preprocess_vqgan(images.cuda(args.gpu))
@@ -129,15 +132,18 @@ for epoch in range(args.epochs):
         loss.backward()
         optimizer.step()
 
+    end_time = time.time()
+
     # log and save after every epoch
     train_loss = float(np.mean(losses))
-    print('Epoch:', epoch, '|', 'Training loss:', train_loss)
+    elapsed_time = end_time - start_time
+    print('Epoch:', epoch, '|', 'Training loss:', train_loss, '|', 'Elapsed time:', elapsed_time)
 
     # save trained model, etc.
     if args.distributed:
         if args.rank == 0:
-            save_checkpoint(model, optimizer, train_loss, epoch, model_name, args.save_dir)
+            save_checkpoint(model, optimizer, train_loss, elapsed_time, epoch, model_name, args.save_dir)
     else:
-        save_checkpoint(model, optimizer, train_loss, epoch, model_name, args.save_dir)
+        save_checkpoint(model, optimizer, train_loss, elapsed_time, epoch, model_name, args.save_dir)
 
     losses = []
