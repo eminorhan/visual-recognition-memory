@@ -22,9 +22,9 @@ parser.add_argument('--gpt_config', default='GPT_bet', type=str, help='name of G
 parser.add_argument('--vocab_size', default=16384, type=int, help='vocabulary size')
 parser.add_argument('--block_size', default=255, type=int, help='context size')
 parser.add_argument('--batch_size', default=32, type=int, help='batch size per gpu')
-parser.add_argument('--print_freq', default=5000, type=int, help='print after x iterations')
 parser.add_argument('--lr', default=0.0005, type=float, help='learning rate')
 parser.add_argument('--optimizer', default='Adam', choices=['Adam', 'AdamW', 'SGD', 'ASGD'], help='optimizer')
+parser.add_argument('--epochs', default=1000, type=int, help='number of training epochs')
 parser.add_argument('--resume', default='', type=str, help='Model path for resuming training')
 parser.add_argument('--save_prefix', default='', type=str, help='Prefix string for saving')
 parser.add_argument('--gpu', default=None, type=int)
@@ -94,11 +94,11 @@ else:
 
 optimizer = torch.optim.__dict__[args.optimizer](model.parameters(), args.lr, weight_decay=0.0)
 
-if os.path.isfile(args.resume):
-    checkpoint = torch.load(args.resume)
+if os.path.isfile(os.path.join(args.resume, args.save_dir)):
+    checkpoint = torch.load(os.path.join(args.resume, args.save_dir))
     model.module.load_state_dict(checkpoint['model_state_dict'])
     optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
-    print("=> loaded model weights and optimizer state at checkpoint '{}'".format(args.resume))
+    print("=> loaded model weights and optimizer state at checkpoint '{}'".format(os.path.join(args.resume, args.save_dir)))
     del checkpoint
     torch.cuda.empty_cache()
 else:
@@ -107,14 +107,12 @@ else:
 # train model
 model.train()
 losses = []
-global_iter = 0
-epoch_iter = 0
 
-while True:
+for epoch in range(args.epochs):
 
     # the following is necessary to shuffle the order at the beginning of each epoch
     if args.distributed: 
-        data_loader.sampler.set_epoch(epoch_iter)
+        data_loader.sampler.set_epoch(epoch)
 
     for _, (images, _) in enumerate(data_loader):
         with torch.no_grad():
@@ -131,19 +129,15 @@ while True:
         loss.backward()
         optimizer.step()
 
-        if global_iter % args.print_freq == 0:
-            train_loss = float(np.mean(losses))
-            print('Iteration:', global_iter, '|', 'Training loss:', train_loss)
+    # log and save after every epoch
+    train_loss = float(np.mean(losses))
+    print('Epoch:', epoch, '|', 'Training loss:', train_loss)
 
-            # save trained model, clusters, and final train loss
-            if args.distributed:
-                if args.rank == 0:
-                    save_checkpoint(model, optimizer, train_loss, global_iter, model_name, args.save_dir)
-            else:
-                save_checkpoint(model, optimizer, train_loss, global_iter, model_name, args.save_dir)
+    # save trained model, etc.
+    if args.distributed:
+        if args.rank == 0:
+            save_checkpoint(model, optimizer, train_loss, epoch, model_name, args.save_dir)
+    else:
+        save_checkpoint(model, optimizer, train_loss, epoch, model_name, args.save_dir)
 
-            losses = []
-
-        global_iter += 1
-
-    epoch_iter += 1
+    losses = []

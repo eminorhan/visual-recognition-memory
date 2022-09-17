@@ -116,3 +116,32 @@ Iteration: 120000 | Training loss: 4.006272976016998
 Saving model to: /scratch/eo41/visual-recognition-memory/gpt_pretrained_models/model_120000_saycam_GPT_gimel_256b_0.0003lr_Adamo_0s.pt
 Iteration: 125000 | Training loss: 3.9899257640361787
 Saving model to: /scratch/eo41/visual-recognition-memory/gpt_pretrained_models/model_125000_saycam_GPT_gimel_256b_0.0003lr_Adamo_0s.pt
+Iteration: 130000 | Training loss: 3.976572121858597
+Saving model to: /scratch/eo41/visual-recognition-memory/gpt_pretrained_models/model_130000_saycam_GPT_gimel_256b_0.0003lr_Adamo_0s.pt
+Iteration: 135000 | Training loss: 3.9629984576702117
+Saving model to: /scratch/eo41/visual-recognition-memory/gpt_pretrained_models/model_135000_saycam_GPT_gimel_256b_0.0003lr_Adamo_0s.pt
+Iteration: 140000 | Training loss: 3.948821663188934
+Saving model to: /scratch/eo41/visual-recognition-memory/gpt_pretrained_models/model_140000_saycam_GPT_gimel_256b_0.0003lr_Adamo_0s.pt
+Iteration: 145000 | Training loss: 3.937696319961548
+Saving model to: /scratch/eo41/visual-recognition-memory/gpt_pretrained_models/model_145000_saycam_GPT_gimel_256b_0.0003lr_Adamo_0s.pt
+Iteration: 150000 | Training loss: 3.9237686227798463
+Saving model to: /scratch/eo41/visual-recognition-memory/gpt_pretrained_models/model_150000_saycam_GPT_gimel_256b_0.0003lr_Adamo_0s.pt
+Iteration: 155000 | Training loss: 3.913267382621765
+Saving model to: /scratch/eo41/visual-recognition-memory/gpt_pretrained_models/model_155000_saycam_GPT_gimel_256b_0.0003lr_Adamo_0s.pt
+Iteration: 160000 | Training loss: 3.9024244798660277
+Saving model to: /scratch/eo41/visual-recognition-memory/gpt_pretrained_models/model_160000_saycam_GPT_gimel_256b_0.0003lr_Adamo_0s.pt
+Iteration: 165000 | Training loss: 3.8897373348712923
+Saving model to: /scratch/eo41/visual-recognition-memory/gpt_pretrained_models/model_165000_saycam_GPT_gimel_256b_0.0003lr_Adamo_0s.pt
+Iteration: 170000 | Training loss: 3.8808284840106966
+Saving model to: /scratch/eo41/visual-recognition-memory/gpt_pretrained_models/model_170000_saycam_GPT_gimel_256b_0.0003lr_Adamo_0s.pt
+Iteration: 175000 | Training loss: 3.8702740572452545
+Saving model to: /scratch/eo41/visual-recognition-memory/gpt_pretrained_models/model_175000_saycam_GPT_gimel_256b_0.0003lr_Adamo_0s.pt
+Iteration: 180000 | Training loss: 3.861221531867981
+Saving model to: /scratch/eo41/visual-recognition-memory/gpt_pretrained_models/model_180000_saycam_GPT_gimel_256b_0.0003lr_Adamo_0s.pt
+Iteration: 185000 | Training loss: 3.851417108297348
+Saving model to: /scratch/eo41/visual-recognition-memory/gpt_pretrained_models/model_185000_saycam_GPT_gimel_256b_0.0003lr_Adamo_0s.pt
+Iteration: 190000 | Training loss: 3.841740920543671
+Saving model to: /scratch/eo41/visual-recognition-memory/gpt_pretrained_models/model_190000_saycam_GPT_gimel_256b_0.0003lr_Adamo_0s.pt
+srun: Job step aborted: Waiting up to 32 seconds for job step to finish.
+slurmstepd: error: *** JOB 24908404 ON ga004 CANCELLED AT 2022-09-17T07:36:01 ***
+slurmstepd: error: *** STEP 24908404.0 ON ga004 CANCELLED AT 2022-09-17T07:36:01 ***

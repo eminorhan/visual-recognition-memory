@@ -22,17 +22,16 @@ LR=0.0003
 OPTIMIZER='Adam'
 
 srun python -u /scratch/eo41/visual-recognition-memory/train.py \
-	--data_path '/scratch/eo41/Y' \
+	--data_path '/scratch/work/public/imagenet/train' \
 	--save_dir '/scratch/eo41/visual-recognition-memory/gpt_pretrained_models' \
 	--gpt_config 'GPT_gimel' \
-	--save_prefix 'saycam' \
-	--batch_size 32 \
+	--save_prefix 'imagenet' \
+	--batch_size 45 \
 	--num_workers 8 \
-	--print_freq 5000 \
 	--optimizer $OPTIMIZER \
 	--lr $LR \
 	--seed $SLURM_ARRAY_TASK_ID \
-	--resume ''
+	--resume 'imagenet_527_gimel'
 	
 
 echo "Done"
