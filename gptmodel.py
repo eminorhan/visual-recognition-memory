@@ -29,7 +29,7 @@ class GPT_alef(GPTConfig):
     """ Roughly ??M params """
     n_layer = 12
     n_head = 12
-    n_embd = 786
+    n_embd = 768
 
 class GPT_bet(GPTConfig):
     """ Roughly ??M params """

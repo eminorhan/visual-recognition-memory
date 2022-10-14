@@ -95,11 +95,17 @@ else:
 
 optimizer = torch.optim.__dict__[args.optimizer](model.parameters(), args.lr, weight_decay=0.0)
 
-if os.path.isfile(os.path.join(args.resume, args.save_dir)):
-    checkpoint = torch.load(os.path.join(args.resume, args.save_dir))
+if os.path.isfile(args.resume):
+    checkpoint = torch.load(args.resume, map_location='cpu')  # avoid GPU RAM surge
     model.module.load_state_dict(checkpoint['model_state_dict'])
     optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
-    print("=> loaded model weights and optimizer state at checkpoint '{}'".format(os.path.join(args.resume, args.save_dir)))
+
+    # change lr if requested
+    for g in optimizer.param_groups:
+        g['lr'] = args.lr
+    print("=> loaded model weights and optimizer state at checkpoint '{}'".format(args.resume))
+
+    # delete to free up memory
     del checkpoint
     torch.cuda.empty_cache()
 else:
@@ -121,7 +127,7 @@ for epoch in range(args.epochs):
         with torch.no_grad():
             images = preprocess_vqgan(images.cuda(args.gpu))
             _, _, [_, _, indices] = vq_model.encode(images)
-            indices = indices.reshape(args.batch_size, -1)
+            indices = indices.reshape(images.size(0), -1)
             
         # forward prop
         _, loss, _ = model(indices[:, :-1], indices[:, 1:])  # first output returns logits, last one returns unreduced losses

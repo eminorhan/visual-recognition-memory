@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#SBATCH --nodes=2
+#SBATCH --nodes=4
 #SBATCH --ntasks-per-node=4
 #SBATCH --gres=gpu:a100:4
 #SBATCH --cpus-per-task=8
@@ -13,7 +13,7 @@
 ### change WORLD_SIZE as gpus/node * num_nodes
 export MASTER_ADDR=$(hostname -s)
 export MASTER_PORT=$(shuf -i 10000-65500 -n 1)
-export WORLD_SIZE=8
+export WORLD_SIZE=16
 
 module purge
 module load cuda/11.3.1
@@ -21,16 +21,59 @@ module load cuda/11.3.1
 LR=0.0003
 OPTIMIZER='Adam'
 
+# ALEF
+#srun python -u /scratch/eo41/visual-recognition-memory/train.py \
+#	--data_path '/scratch/work/public/imagenet/train' \
+#	--save_dir '/scratch/eo41/visual-recognition-memory/gpt_pretrained_models' \
+#	--gpt_config 'GPT_alef' \
+#	--save_prefix 'imagenet' \
+#	--epochs 1000 \
+#	--batch_size 128 \
+#	--num_workers 8 \
+#	--optimizer $OPTIMIZER \
+#	--lr $LR \
+#	--seed $SLURM_ARRAY_TASK_ID \
+#	--resume ''
+
+# BET
+#srun python -u /scratch/eo41/visual-recognition-memory/train.py \
+#	--data_path '/scratch/work/public/imagenet/train' \
+#	--save_dir '/scratch/eo41/visual-recognition-memory/gpt_pretrained_models' \
+#	--gpt_config 'GPT_bet' \
+#	--save_prefix 'imagenet' \
+#	--epochs 1000 \
+#	--batch_size 64 \
+#	--num_workers 8 \
+#	--optimizer $OPTIMIZER \
+#	--lr $LR \
+#	--seed $SLURM_ARRAY_TASK_ID \
+#	--resume ''
+
+# DALET
 srun python -u /scratch/eo41/visual-recognition-memory/train.py \
 	--data_path '/scratch/work/public/imagenet/train' \
 	--save_dir '/scratch/eo41/visual-recognition-memory/gpt_pretrained_models' \
-	--gpt_config 'GPT_gimel' \
+	--gpt_config 'GPT_dalet' \
 	--save_prefix 'imagenet' \
-	--batch_size 45 \
+	--epochs 1000 \
+	--batch_size 16 \
 	--num_workers 8 \
 	--optimizer $OPTIMIZER \
 	--lr $LR \
 	--seed $SLURM_ARRAY_TASK_ID \
-	--resume 'imagenet_527_gimel'
-
+	--resume '/scratch/eo41/visual-recognition-memory/gpt_pretrained_models/imagenet_dalet.pt'
+	
+#srun python -u /scratch/eo41/visual-recognition-memory/train.py \
+#	--data_path '/vast/eo41/SAY_1fps' \
+#	--save_dir '/scratch/eo41/visual-recognition-memory/gpt_pretrained_models' \
+#	--gpt_config 'GPT_gimel' \
+#	--save_prefix 'saycam' \
+#	--epochs 1000 \
+#	--batch_size 32 \
+#	--num_workers 8 \
+#	--optimizer $OPTIMIZER \
+#	--lr $LR \
+#	--seed $SLURM_ARRAY_TASK_ID \
+#	--resume '/scratch/eo41/visual-recognition-memory/gpt_pretrained_models/saycam_gimel.pt'
+	
 echo "Done"

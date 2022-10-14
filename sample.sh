@@ -12,7 +12,14 @@
 module purge
 module load cuda/11.3.1
 
-# python -u /scratch/eo41/vqgan-gpt/sample.py --condition "free"
-python -u /scratch/eo41/vqgan-gpt/sample.py --condition "cond"
+python -u /scratch/eo41/visual-recognition-memory/sample.py \
+	--gpt_dir '/scratch/eo41/visual-recognition-memory/gpt_pretrained_models' \
+	--condition 'cond' \
+	--n_samples 6 \
+	--seed 0 \
+	--seed $SLURM_ARRAY_TASK_ID \
+	--gpt_config 'GPT_gimel' \
+	--gpt_model 'saycam_gimel' \
+	--data_path '/scratch/eo41/data/cat.tar' # '/scratch/eo41/data/konkle_objects/konkle_objects_train_000000.tar'
 
 echo "Done"

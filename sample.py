@@ -2,9 +2,9 @@ import os
 import argparse
 import torch
 import numpy as np
-from gptmodel import GPT, GPTConfig
+import gptmodel
 from torch.nn import functional as F
-from utils import load_config, load_vqgan
+from utils import load_config, load_vqgan, set_seed
 from torchvision.utils import save_image
 
 
@@ -80,21 +80,25 @@ def generate_samples_from_half(model, x, n_samples):
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description='Generate samples from a checkpointed GPT')
-    parser.add_argument('--gpt_dir', default="/scratch/eo41/vqgan-gpt/gpt_pretrained_models", type=str, help='Directory storing the GPT model')
-    parser.add_argument('--gpt_model', default="model_155000_36l_12h_1008e_88b_0.0005lr_Adamo_0s", type=str, help='Full name of the GPT model')
-    parser.add_argument('--vqconfig_path', default="/scratch/eo41/vqgan-gpt/vqgan_pretrained_models/say_32x32_8192.yaml", type=str, help='vq config path')
-    parser.add_argument('--vqmodel_path', default="/scratch/eo41/vqgan-gpt/vqgan_pretrained_models/say_32x32_8192.ckpt", type=str, help=' vq model path')
+    parser.add_argument('--gpt_dir', default='/scratch/eo41/visual-recognition-memory/gpt_pretrained_models', type=str, help='Directory storing the GPT model')
+    parser.add_argument('--gpt_model', default='', type=str, help='Full name of the GPT model')
+    parser.add_argument('--gpt_config', default='GPT_gimel', type=str, help='name of GPT config', choices=['GPT_alef', 'GPT_bet', 'GPT_gimel', 'GPT_dalet'])
+    parser.add_argument('--vqconfig_path', default='/scratch/eo41/visual-recognition-memory/vqgan_pretrained_models/imagenet_16x16_16384.yaml', type=str, help='vq config path')
+    parser.add_argument('--vqmodel_path', default='/scratch/eo41/visual-recognition-memory/vqgan_pretrained_models/imagenet_16x16_16384.ckpt', type=str, help=' vq model path')
     parser.add_argument('--n_samples', default=6, type=int, help='number of samples to generate')
-    parser.add_argument('--data_path', default="/scratch/eo41/data/saycam/SAY_5fps_300s_{000000..000009}.tar", type=str, help='data path')
+    parser.add_argument('--data_path', default='', type=str, help='data path')
     parser.add_argument('--condition', default='free', type=str, help='Generation condition', choices=['free', 'cond'])
     parser.add_argument('--n_imgs', default=5, type=int, help='number of images')
+    parser.add_argument('--seed', default=1, type=int, help='random seed')
 
     args = parser.parse_args()
     print(args)
+    
+    # set random seed
+    set_seed(args.seed)
 
-    ## set up model (TODO: better way to handle the model config)
-    mconf = GPTConfig(8192, 1023, embd_pdrop=0.0, resid_pdrop=0.0, attn_pdrop=0.0, n_layer=36, n_head=12, n_embd=1008)
-    model = GPT(mconf)
+    mconf = gptmodel.__dict__[args.gpt_config](16384, 255)  # TODO: handle these numbers better
+    model = gptmodel.GPT(mconf)
 
     # load the model
     print("Loading model")
@@ -112,18 +116,17 @@ if __name__ == "__main__":
     if args.condition == 'free':
         # generate some samples unconditionally
         print("Generating unconditional samples")
-        pixels = generate_samples(model, 8192, args.n_samples)
+        pixels = generate_samples(model, 16384, args.n_samples)
         print("pixels shape:", pixels.shape)
         n_totsamples = args.n_samples
     else:
         import webdataset as wds
-        from torchvision.transforms import Compose, Resize, RandomCrop, RandomResizedCrop, ToTensor
+        from torchvision.transforms import Compose, Resize, RandomCrop, ToTensor
         from utils import preprocess, preprocess_vqgan
 
         # data preprocessing
-        # transform = Compose([RandomResizedCrop(256, scale=(0.4, 1)), ToTensor()])
         transform = Compose([Resize(288), RandomCrop(256), ToTensor()])
-        dataset = (wds.WebDataset(args.data_path, resampled=True).shuffle(1000).decode("pil").to_tuple("jpg").map(preprocess).map(transform))
+        dataset = (wds.WebDataset(args.data_path, resampled=True).shuffle(10000, initial=10000).decode("pil").to_tuple("jpg").map(preprocess).map(transform))
         data_loader = wds.WebLoader(dataset, shuffle=False, batch_size=args.n_imgs, num_workers=4)
 
         for it, images in enumerate(data_loader):
@@ -141,7 +144,7 @@ if __name__ == "__main__":
         print("pixels shape:", pixels.shape)
         n_totsamples = args.n_samples * args.n_imgs
 
-    z = modelsaycam.quantize.get_codebook_entry(pixels, (n_totsamples, 32, 32, 256))
+    z = modelsaycam.quantize.get_codebook_entry(pixels, (n_totsamples, 16, 16, 256))
     print("z shape:", z.shape)
 
     xmodel = modelsaycam.decode(z)
@@ -150,4 +153,4 @@ if __name__ == "__main__":
     if args.condition == "cond":
         xmodel[:, :, 126, :] = 1
 
-    save_image(xmodel, "{}_{}.pdf".format(args.condition, args.gpt_model), nrow=5, padding=1, normalize=True)
+    save_image(xmodel, "{}_{}_{}.png".format(args.condition, args.gpt_model, args.seed), nrow=5, padding=1, normalize=True)
