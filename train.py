@@ -26,6 +26,7 @@ parser.add_argument('--batch_size', default=32, type=int, help='batch size per g
 parser.add_argument('--lr', default=0.0005, type=float, help='learning rate')
 parser.add_argument('--optimizer', default='Adam', choices=['Adam', 'AdamW', 'SGD', 'ASGD'], help='optimizer')
 parser.add_argument('--epochs', default=1000, type=int, help='number of training epochs')
+parser.add_argument('--subsample', default=1.0, type=float, help='subsample dataset')
 parser.add_argument('--resume', default='', type=str, help='Model path for resuming training')
 parser.add_argument('--save_prefix', default='', type=str, help='Prefix string for saving')
 parser.add_argument('--gpu', default=None, type=int)
@@ -70,6 +71,9 @@ print('Loaded VQ encoder.')
 # data pipeline
 transform = Compose([Resize(288), RandomCrop(256), ToTensor()])
 dataset = ImageFolder(args.data_path, transform)
+if args.subsample < 1.0:
+    from torch.utils.data import random_split
+    dataset, _ = random_split(dataset, [args.subsample, 1.0-args.subsample], generator=torch.Generator().manual_seed(args.seed))
 sampler = DistributedSampler(dataset, seed=args.seed) if args.distributed else None
 data_loader = DataLoader(dataset, batch_size=args.batch_size, shuffle=(not args.distributed), num_workers=args.num_workers, pin_memory=True, sampler=sampler)
 print('Data loaded: dataset contains {} images, and takes {} training iterations per epoch.'.format(len(dataset), len(data_loader)))
