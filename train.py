@@ -73,7 +73,9 @@ transform = Compose([Resize(288), RandomCrop(256), ToTensor()])
 dataset = ImageFolder(args.data_path, transform)
 if args.subsample < 1.0:
     from torch.utils.data import random_split
-    dataset, _ = random_split(dataset, [args.subsample, 1.0-args.subsample], generator=torch.Generator().manual_seed(args.seed))
+    old_l = len(dataset)
+    new_l = int(args.subsample * old_l)
+    dataset, _ = random_split(dataset, [new_l, old_l-new_l], generator=torch.Generator().manual_seed(args.seed))
 sampler = DistributedSampler(dataset, seed=args.seed) if args.distributed else None
 data_loader = DataLoader(dataset, batch_size=args.batch_size, shuffle=(not args.distributed), num_workers=args.num_workers, pin_memory=True, sampler=sampler)
 print('Data loaded: dataset contains {} images, and takes {} training iterations per epoch.'.format(len(dataset), len(data_loader)))
