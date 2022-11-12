@@ -92,33 +92,33 @@ OPTIMIZER='Adam'
 #	--resume '/scratch/eo41/visual-recognition-memory/gpt_pretrained_models/saycam_gimel.pt'
 
 # GIMEL - ImageNet 10%
-srun python -u /scratch/eo41/visual-recognition-memory/train.py \
-	--data_path '/scratch/work/public/imagenet/train' \
-	--save_dir '/scratch/eo41/visual-recognition-memory/gpt_pretrained_models' \
-	--gpt_config 'GPT_gimel' \
-	--save_prefix 'imagenet_10' \
-	--epochs 1000 \
-	--batch_size 32 \
-	--num_workers 8 \
-	--optimizer $OPTIMIZER \
-	--lr $LR \
-	--subsample 0.1 \
-	--seed $SLURM_ARRAY_TASK_ID \
-	--resume ''
-
-# GIMEL - ImageNet 1%
 #srun python -u /scratch/eo41/visual-recognition-memory/train.py \
 #	--data_path '/scratch/work/public/imagenet/train' \
 #	--save_dir '/scratch/eo41/visual-recognition-memory/gpt_pretrained_models' \
 #	--gpt_config 'GPT_gimel' \
-#	--save_prefix 'imagenet_1' \
+#	--save_prefix 'imagenet_10' \
 #	--epochs 1000 \
 #	--batch_size 32 \
 #	--num_workers 8 \
 #	--optimizer $OPTIMIZER \
 #	--lr $LR \
-#	--subsample 0.01 \
+#	--subsample 0.1 \
 #	--seed $SLURM_ARRAY_TASK_ID \
 #	--resume ''
+
+# GIMEL - ImageNet 1%
+srun python -u /scratch/eo41/visual-recognition-memory/train.py \
+	--data_path '/scratch/work/public/imagenet/train' \
+	--save_dir '/scratch/eo41/visual-recognition-memory/gpt_pretrained_models' \
+	--gpt_config 'GPT_gimel' \
+	--save_prefix 'imagenet_1' \
+	--epochs 1000 \
+	--batch_size 32 \
+	--num_workers 8 \
+	--optimizer $OPTIMIZER \
+	--lr $LR \
+	--subsample 0.01 \
+	--seed $SLURM_ARRAY_TASK_ID \
+	--resume ''
 
 echo "Done"
