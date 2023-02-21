@@ -42,11 +42,13 @@ def save_checkpoint(model, optimizer, train_loss, elapsed_time, epoch, model_nam
     raw_model = model.module if hasattr(model, "module") else model
     
     # save everything we need
-    save_str = 'model_{:03d}_{}'.format(epoch, model_name)
+    save_str = '{}_{}.pt'.format(model_name, epoch)
     save_path = os.path.join(save_dir, save_str)
     print('Saving model to:', save_path)
-    torch.save({'model_state_dict': raw_model.state_dict(), 
-                'optimizer_state_dict': optimizer.state_dict(), 
-                'train_loss': train_loss,
-                'elapsed_time': elapsed_time
-                }, save_path)
+    torch.save({
+        'model_state_dict': raw_model.state_dict(), 
+        'optimizer_state_dict': optimizer.state_dict(), 
+        'train_loss': train_loss,
+        'elapsed_time': elapsed_time
+        }, 
+        save_path)

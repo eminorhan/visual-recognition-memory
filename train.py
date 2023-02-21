@@ -85,7 +85,6 @@ mconf = gptmodel.__dict__[args.gpt_config](args.vocab_size, args.block_size)
 model = gptmodel.GPT(mconf)
 
 print('Running on {} GPUs total'.format(args.world_size))
-model_name = '{}_{}_{}b_{}lr_{}o_{}s.pt'.format(args.save_prefix, args.gpt_config, args.world_size * args.batch_size, args.lr, args.optimizer, args.seed)
 
 if args.distributed:
     # For multiprocessing distributed, DDP constructor should always set the single device scope
@@ -154,8 +153,8 @@ for epoch in range(args.epochs):
     # save trained model, etc.
     if args.distributed:
         if args.rank == 0:
-            save_checkpoint(model, optimizer, train_loss, elapsed_time, epoch, model_name, args.save_dir)
+            save_checkpoint(model, optimizer, train_loss, elapsed_time, epoch, args.save_prefix, args.save_dir)
     else:
-        save_checkpoint(model, optimizer, train_loss, elapsed_time, epoch, model_name, args.save_dir)
+        save_checkpoint(model, optimizer, train_loss, elapsed_time, epoch, args.save_prefix, args.save_dir)
 
     losses = []
