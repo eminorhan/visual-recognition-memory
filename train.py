@@ -19,7 +19,7 @@ parser.add_argument('--vqmodel_path', default="/scratch/eo41/visual-recognition-
 parser.add_argument('--num_workers', default=4, type=int, help='number of data loading workers (default: 4)')
 parser.add_argument('--seed', default=1, type=int, help='random seed')
 parser.add_argument('--save_dir', default='', type=str, help='model save directory')
-parser.add_argument('--save_freq', default=10, type=int, help='save checkpoint every this many epochs')
+parser.add_argument('--save_freq', default=1, type=int, help='save checkpoint every this many epochs')
 parser.add_argument('--save_prefix', default='', type=str, help='Prefix string for saving')
 parser.add_argument('--gpt_config', default='GPT_bet', type=str, help='name of GPT config', choices=['GPT_alef', 'GPT_bet', 'GPT_gimel', 'GPT_dalet'])
 parser.add_argument('--vocab_size', default=16384, type=int, help='vocabulary size')
