@@ -55,6 +55,7 @@ srun python -u /scratch/eo41/visual-recognition-memory/train.py \
 	--save_dir '/scratch/eo41/visual-recognition-memory/gpt_finetuned_models' \
 	--gpt_config 'GPT_gimel' \
 	--save_prefix 'imagenet100_gimel_konkle_iid' \
+	--save_freq 50 \
 	--epochs 1000 \
 	--batch_size 32 \
 	--num_workers 16 \

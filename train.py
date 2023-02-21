@@ -19,6 +19,8 @@ parser.add_argument('--vqmodel_path', default="/scratch/eo41/visual-recognition-
 parser.add_argument('--num_workers', default=4, type=int, help='number of data loading workers (default: 4)')
 parser.add_argument('--seed', default=1, type=int, help='random seed')
 parser.add_argument('--save_dir', default='', type=str, help='model save directory')
+parser.add_argument('--save_freq', default=10, type=int, help='save checkpoint every this many epochs')
+parser.add_argument('--save_prefix', default='', type=str, help='Prefix string for saving')
 parser.add_argument('--gpt_config', default='GPT_bet', type=str, help='name of GPT config', choices=['GPT_alef', 'GPT_bet', 'GPT_gimel', 'GPT_dalet'])
 parser.add_argument('--vocab_size', default=16384, type=int, help='vocabulary size')
 parser.add_argument('--block_size', default=255, type=int, help='context size')
@@ -28,7 +30,6 @@ parser.add_argument('--optimizer', default='Adam', choices=['Adam', 'AdamW', 'SG
 parser.add_argument('--epochs', default=1000, type=int, help='number of training epochs')
 parser.add_argument('--subsample', default=1.0, type=float, help='subsample dataset')
 parser.add_argument('--resume', default='', type=str, help='Model path for resuming training')
-parser.add_argument('--save_prefix', default='', type=str, help='Prefix string for saving')
 parser.add_argument('--gpu', default=None, type=int)
 parser.add_argument('--world-size', default=-1, type=int, help='number of nodes for distributed training')
 parser.add_argument('--rank', default=-1, type=int, help='node rank for distributed training')
@@ -150,11 +151,12 @@ for epoch in range(args.epochs):
     elapsed_time = end_time - start_time
     print('Epoch:', epoch, '|', 'Training loss:', train_loss, '|', 'Elapsed time:', elapsed_time)
 
-    # save trained model, etc.
-    if args.distributed:
-        if args.rank == 0:
+    if epoch % args.save_freq == 0:
+        # save trained model, etc.
+        if args.distributed:
+            if args.rank == 0:
+                save_checkpoint(model, optimizer, train_loss, elapsed_time, epoch, args.save_prefix, args.save_dir)
+        else:
             save_checkpoint(model, optimizer, train_loss, elapsed_time, epoch, args.save_prefix, args.save_dir)
-    else:
-        save_checkpoint(model, optimizer, train_loss, elapsed_time, epoch, args.save_prefix, args.save_dir)
 
     losses = []
