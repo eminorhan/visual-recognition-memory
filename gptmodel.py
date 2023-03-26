@@ -1,10 +1,4 @@
 """
-GPT model:
-- the initial stem consists of a combination of token encoding and a positional encoding
-- the meat of it is a uniform sequence of Transformer blocks
-    - each Transformer is a sequential combination of a 1-hidden-layer MLP block and a self-attention block
-    - all blocks feed into a central residual pathway similar to resnets
-- the final decoder is a linear projection into a vanilla Softmax classifier
 """
 
 import math
@@ -48,16 +42,6 @@ class GPT_dalet(GPTConfig):
     n_layer = 48
     n_head = 25
     n_embd = 1600
-
-class MeanLayer(torch.nn.Module):
-    def __init__(self, dim, keepdim=False):
-        super(MeanLayer, self).__init__()
-        self.dim = dim
-        self.keepdim = keepdim
-
-    def forward(self, x):
-        out = torch.mean(x, self.dim, self.keepdim)
-        return out
 
 class CausalSelfAttention(nn.Module):
     """

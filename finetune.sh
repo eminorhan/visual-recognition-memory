@@ -16,7 +16,7 @@ export MASTER_PORT=$(shuf -i 10000-65500 -n 1)
 export WORLD_SIZE=1
 
 module purge
-module load cuda/11.6.2
+module load cuda/11.3.1
 
 LR=0.0003
 OPTIMIZER='Adam'
@@ -49,21 +49,6 @@ OPTIMIZER='Adam'
 #	--seed $SLURM_ARRAY_TASK_ID \
 #	--resume '/scratch/eo41/visual-recognition-memory/gpt_pretrained_models/imagenet_bet.pt'
 
-# GIMEL
-srun python -u /scratch/eo41/visual-recognition-memory/train.py \
-	--data_path '/vast/eo41/data/konkle_iid/train' \
-	--save_dir '/scratch/eo41/visual-recognition-memory/gpt_finetuned_models' \
-	--gpt_config 'GPT_gimel' \
-	--save_prefix 'imagenet100_gimel_konkle_iid' \
-	--save_freq 50 \
-	--epochs 1000 \
-	--batch_size 32 \
-	--num_workers 16 \
-	--optimizer $OPTIMIZER \
-	--lr $LR \
-	--seed $SLURM_ARRAY_TASK_ID \
-	--resume '/scratch/eo41/visual-recognition-memory/gpt_pretrained_models/imagenet_gimel.pt'
-
 # DALET
 #srun python -u /scratch/eo41/visual-recognition-memory/train.py \
 #	--data_path '/scratch/work/public/imagenet/train' \
@@ -92,34 +77,49 @@ srun python -u /scratch/eo41/visual-recognition-memory/train.py \
 #	--seed $SLURM_ARRAY_TASK_ID \
 #	--resume '/scratch/eo41/visual-recognition-memory/gpt_pretrained_models/saycam_gimel.pt'
 
-# GIMEL - ImageNet 10%
-#srun python -u /scratch/eo41/visual-recognition-memory/train.py \
-#	--data_path '/scratch/work/public/imagenet/train' \
-#	--save_dir '/scratch/eo41/visual-recognition-memory/gpt_pretrained_models' \
-#	--gpt_config 'GPT_gimel' \
-#	--save_prefix 'imagenet_10' \
-#	--epochs 1000 \
-#	--batch_size 32 \
-#	--num_workers 8 \
-#	--optimizer $OPTIMIZER \
-#	--lr $LR \
-#	--subsample 0.1 \
-#	--seed $SLURM_ARRAY_TASK_ID \
-#	--resume ''
-
-# GIMEL - ImageNet 1%
+# # GIMEL - ImageNet 100%
 # srun python -u /scratch/eo41/visual-recognition-memory/train.py \
-# 	--data_path '/scratch/work/public/imagenet/train' \
-# 	--save_dir '/scratch/eo41/visual-recognition-memory/gpt_pretrained_models' \
+# 	--data_path '/vast/eo41/data/konkle_ood/vehicle_vs_nonvehicle/nonvehicle' \
+# 	--save_dir '/scratch/eo41/visual-recognition-memory/gpt_finetuned_models' \
 # 	--gpt_config 'GPT_gimel' \
-# 	--save_prefix 'imagenet_1' \
+# 	--save_prefix 'imagenet100_gimel_konkle_nonvehicle' \
+# 	--save_freq 100 \
 # 	--epochs 1000 \
 # 	--batch_size 32 \
-# 	--num_workers 8 \
+# 	--num_workers 16 \
 # 	--optimizer $OPTIMIZER \
 # 	--lr $LR \
-# 	--subsample 0.01 \
 # 	--seed $SLURM_ARRAY_TASK_ID \
-# 	--resume ''
+# 	--resume '/scratch/eo41/visual-recognition-memory/gpt_pretrained_models/imagenet_gimel.pt'
+
+# # GIMEL - ImageNet 10%
+# srun python -u /scratch/eo41/visual-recognition-memory/train.py \
+# 	--data_path '/vast/eo41/data/konkle_ood/vehicle_vs_nonvehicle/nonvehicle' \
+# 	--save_dir '/scratch/eo41/visual-recognition-memory/gpt_finetuned_models' \
+# 	--gpt_config 'GPT_gimel' \
+# 	--save_prefix 'imagenet10_gimel_konkle_nonvehicle' \
+# 	--save_freq 100 \
+# 	--epochs 1000 \
+# 	--batch_size 32 \
+# 	--num_workers 16 \
+# 	--optimizer $OPTIMIZER \
+# 	--lr $LR \
+# 	--seed $SLURM_ARRAY_TASK_ID \
+# 	--resume '/scratch/eo41/visual-recognition-memory/gpt_pretrained_models/imagenet_10_gimel.pt'
+
+# GIMEL - ImageNet 1%
+srun python -u /scratch/eo41/visual-recognition-memory/train.py \
+	--data_path '/vast/eo41/data/konkle_ood/vehicle_vs_nonvehicle/nonvehicle' \
+	--save_dir '/scratch/eo41/visual-recognition-memory/gpt_finetuned_models' \
+	--gpt_config 'GPT_gimel' \
+	--save_prefix 'imagenet1_gimel_konkle_nonvehicle' \
+	--save_freq 100 \
+	--epochs 1000 \
+	--batch_size 32 \
+	--num_workers 16 \
+	--optimizer $OPTIMIZER \
+	--lr $LR \
+	--seed $SLURM_ARRAY_TASK_ID \
+	--resume '/scratch/eo41/visual-recognition-memory/gpt_pretrained_models/imagenet_1_gimel.pt'
 
 echo "Done"
